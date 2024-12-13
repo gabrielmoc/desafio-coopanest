@@ -1,0 +1,79 @@
+DOCUMENTAÇÃO DO PROJETO
+
+Documentação do Backend:
+
+1. Conexão com o Banco de Dados:
+O backend utiliza PHP para estabelecer conexão com um banco de dados MySQL. A configuração inclui:
+- Servidor: localhost
+- Usuário: root
+- Senha: vazia (sem senha padrão)
+- Banco de dados: coopanest
+
+2. Rotas e Métodos HTTP:
+- GET /dados:
+  Retorna todos os dados cadastrados na tabela "dados_originais" no banco de dados.
+
+- POST /dados:
+  Recebe os dados enviados do formulário da Tela 1, valida-os e os insere na tabela "dados_originais". Exemplo de JSON enviado:
+  {
+    "nome": "Gabriel",
+    "cpf": "12345678901",
+    "data_nascimento": "22/11/2003",
+    "idade": 21,
+    "genero": "Masculino",
+    "email": "gabriel@hotmail.com",
+    "telefone": "81999999999",
+    "endereco": "Rua Teste, 123"
+  }
+
+- PUT /dados/{id}:
+  Atualiza os dados de um registro existente na tabela "dados_originais" baseado no ID fornecido. Exemplo de JSON enviado:
+  {
+    "nome": "Gabriel Cavalcanti",
+    "cpf": "98765432100",
+    "data_nascimento": "22/11/2003",
+    "idade": 21,
+    "genero": "Masculino",
+    "email": "gabriel@gmail.com",
+    "telefone": "81988888888",
+    "endereco": "Rua Nova, 999"
+  }
+  Além de atualizar na tabela "dados_originais", os dados modificados são registrados na tabela "dados_editados" junto com a data e hora da alteração.
+
+3. Validação de Dados:
+Todos os dados recebidos passam por validações para garantir integridade:
+- Nome: Apenas letras e espaços.
+- CPF: Deve conter exatamente 11 dígitos.
+- Telefone: Deve conter exatamente 11 dígitos (incluindo o DDD).
+- Email: Deve estar em um formato válido.
+- Data de nascimento: Não pode ser uma data futura e deve estar no formato dd/mm/yyyy.
+- Idade: Deve condizer com a data de nascimento informada.
+- Endereço: Deve estar no formato "Nome da Rua, Número".
+- Gênero: Aceita apenas "Masculino", "Feminino" ou "Outro".
+
+
+Documentação do Frontend:
+
+1. Tela 1 - Formulário de Cadastro:
+- Estrutura:
+  Um formulário em HTML com campos para nome, CPF, data de nascimento, idade, gênero, email, telefone e endereço.
+
+- Validações:
+  Antes de enviar os dados para o backend, são realizadas validações no lado do cliente (frontend) usando JavaScript.
+  - O CPF e o telefone são formatados automaticamente ao digitar.
+  - Campos obrigatórios são verificados.
+
+- Integração:
+  Os dados do formulário são enviados ao backend via método POST para a rota /dados.
+
+2. Tela 2 - Tabela de Dados:
+- Estrutura:
+  Uma tabela responsiva em HTML exibe os dados cadastrados. Cada linha da tabela representa um registro do banco de dados.
+
+- Funcionalidades:
+  - Permite editar dados diretamente na tabela usando o atributo contenteditable.
+  - Campos como CPF e telefone possuem validação e formatação dinâmica ao serem editados.
+  - Ao clicar em "Salvar", os dados são enviados ao backend via método PUT para a rota /dados/{id}.
+
+- Feedbacks:
+  Após cada operação (edição ou tentativa de edição), mensagens de sucesso ou erro são exibidas ao usuário para informar o status.
